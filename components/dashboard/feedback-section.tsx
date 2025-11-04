@@ -44,7 +44,7 @@ export function FeedbackSection() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Coach Feedback</CardTitle>
-          <Button variant="outline" size="sm">View More</Button>
+          <button className="gradient-button px-4 py-2 text-white text-sm font-medium">View More</button>
         </div>
       </CardHeader>
       <CardContent>

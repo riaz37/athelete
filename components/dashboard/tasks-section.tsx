@@ -1,26 +1,28 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Upload, Bell, Check, Play } from "lucide-react"
+import { Check, Calendar, Clock } from "lucide-react"
 import Image from "next/image"
 
 interface Task {
   id: string
   title: string
   team: string
+  teamColor: "blue" | "orange"
   status: string
+  statusIcon: React.ReactNode
   tag?: {
     label: string
-    variant: "purple" | "live"
+    variant: "grey" | "live"
   }
-  time?: string
   action: {
     label: string
-    icon: React.ReactNode
+    iconSrc?: string
+    icon?: React.ReactNode
     variant: "default" | "secondary"
+    disabled?: boolean
   }
 }
 
@@ -29,31 +31,39 @@ const tasks: Task[] = [
     id: "1",
     title: "Linebacker Drills",
     team: "Hawaii Trench Warriors",
+    teamColor: "blue",
     status: "Due Today",
-    tag: { label: "Video Submission Required", variant: "purple" },
-    action: { label: "Upload", icon: <Upload className="w-4 h-4" />, variant: "default" }
+    statusIcon: <Calendar className="w-3.5 h-3.5" />,
+    tag: { label: "Video Submission Required", variant: "grey" },
+    action: { label: "Upload", iconSrc: "/upload.svg", variant: "default" }
   },
   {
     id: "2",
     title: "University Of Oregon Virtual Camp",
     team: "Hawaii Trench Warriors",
+    teamColor: "orange",
     status: "5:30 pm",
-    tag: { label: "LIVE", variant: "live" },
-    action: { label: "Remind Me", icon: <Bell className="w-4 h-4" />, variant: "default" }
+    statusIcon: <Clock className="w-3.5 h-3.5" />,
+    tag: { label: "Live", variant: "live" },
+    action: { label: "Remind Me", iconSrc: "/remind.svg", variant: "default" }
   },
   {
     id: "3",
     title: "QB Fundamentals",
     team: "Hawaii Trench Warriors",
+    teamColor: "blue",
     status: "Complete",
-    action: { label: "Done", icon: <Check className="w-4 h-4" />, variant: "secondary" }
+    statusIcon: <Check className="w-3.5 h-3.5" />,
+    action: { label: "Done", icon: <Check className="w-4 h-4" />, variant: "secondary", disabled: true }
   },
   {
     id: "4",
     title: "Practice Reading Offense Quiz",
     team: "Hawaii Trench Warriors",
+    teamColor: "blue",
     status: "3 days left",
-    action: { label: "Start", icon: <Play className="w-4 h-4" />, variant: "default" }
+    statusIcon: <Calendar className="w-3.5 h-3.5" />,
+    action: { label: "Start", iconSrc: "/start.svg", variant: "default" }
   },
 ]
 
@@ -94,7 +104,7 @@ const continueItems: ContinueItem[] = [
     id: "3",
     title: "Film Breakdown: Elite Pass Rush",
     progress: 70,
-    dueDate: "Due To",
+    dueDate: "Due Today",
     image: "/v3.svg"
   },
 ]
@@ -107,11 +117,11 @@ export function TasksSection() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-semibold text-gray-900">Continue Where You Left Off</h2>
-            <Button variant="outline" size="sm">View More</Button>
+            <button className="gradient-button px-4 py-2 text-white text-sm font-medium">View More</button>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-2">
             {continueItems.map((item) => (
-              <Card key={item.id} className="min-w-[280px] flex-shrink-0">
+              <Card key={item.id} className="min-w-[280px] shrink-0 flex flex-col">
                 <div className="relative h-48 w-full bg-gray-200 rounded-t-xl overflow-hidden">
                   <Image
                     src={item.image}
@@ -129,15 +139,21 @@ export function TasksSection() {
                     />
                   </div>
                 </div>
-                <CardContent className="p-3">
-                  <h3 className="font-semibold text-gray-900 mb-1.5 text-xs line-clamp-2">{item.title}</h3>
-                  <div className="mb-1.5">
-                    <div className="flex items-center justify-between text-xs mb-0.5">
-                      <span className="text-gray-600">{item.progress}% Complete</span>
-                    </div>
-                    <Progress value={item.progress} className="h-1.5" />
+                <CardContent className="p-3 flex flex-col flex-1">
+                  <h3 className="font-semibold text-gray-900 mb-3 text-xs line-clamp-2">{item.title}</h3>
+                  <div className="mb-2 progress-gradient-wrapper">
+                    <Progress 
+                      value={item.progress} 
+                      className="h-1.5" 
+                    />
                   </div>
-                  <p className="text-xs text-gray-500">{item.dueDate}</p>
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xs text-gray-600">{item.progress}% Complete</span>
+                    <div className="flex items-center gap-1">
+                      <Image src="/due.svg" alt="Due" width={12} height={12} className="w-3 h-3" />
+                      <p className="text-xs text-gray-500">{item.dueDate}</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -150,58 +166,78 @@ export function TasksSection() {
             <CardHeader className="px-0 pt-0 pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">Todays tasks</CardTitle>
-                <Button variant="outline" size="sm">View Entire Schedule</Button>
+                <button className="gradient-button px-4 py-2 text-white text-sm font-medium">View Entire Schedule</button>
               </div>
             </CardHeader>
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+            <div className="flex gap-2 mb-4 pb-2">
               {days.map((d, idx) => (
                 <div
                   key={idx}
-                  className={`flex flex-col items-center min-w-[50px] p-1.5 rounded-lg ${
-                    d.current ? "bg-blue-50" : ""
+                  className={`relative flex flex-col items-center flex-1 p-3 rounded-[16px] date-card-shadow ${
+                    d.current ? "bg-[rgba(255,255,255,1)]" : "bg-[rgba(255,255,255,0.4)]"
                   }`}
                 >
-                  <div className="text-xs text-gray-600 mb-0.5">{d.day}</div>
-                  <div className={`text-xs font-medium ${d.current ? "text-blue-600" : "text-gray-900"}`}>
+                  {d.current && (
+                    <div className="absolute top-2 right-2 w-2 h-2 date-indicator"></div>
+                  )}
+                  <div className="text-lg text-gray-600 mb-0.5">{d.day}</div>
+                  <div className={`text-xs font-medium ${d.current ? "" : "text-gray-900"}`}>
                     {d.date}
                   </div>
-                  {d.current && (
-                    <div className="mt-0.5">
-                      <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
             <div className="space-y-2.5">
-              {tasks.slice(0, 3).map((task) => (
-                <div key={task.id} className="flex items-start justify-between gap-3 p-3 border border-gray-200 rounded-lg">
+              {tasks.map((task) => (
+                <div key={task.id} className="flex items-center justify-between gap-3 p-3 border border-gray-200 rounded-lg bg-white">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <h3 className="font-semibold text-gray-900 text-sm line-clamp-1">{task.title}</h3>
                       {task.tag && (
-                        <Badge variant={task.tag.variant} className="text-xs">
+                        <Badge variant={task.tag.variant} className="text-xs shrink-0">
                           {task.tag.label}
                         </Badge>
                       )}
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-0.5 text-sm line-clamp-1">{task.title}</h3>
-                    <p className="text-xs text-gray-600 mb-0.5 line-clamp-1">{task.team}</p>
-                    <p className={`text-xs ${
-                      task.status === "Complete" ? "text-green-600" : 
-                      task.status === "Due Today" ? "text-red-600" : 
-                      "text-gray-500"
-                    }`}>
-                      {task.status}
-                    </p>
+                    <div className="flex items-center gap-1.5">
+                      <div className={`w-2 h-2 rounded-sm ${
+                        task.teamColor === "blue" ? "bg-blue-600" : "bg-orange-500"
+                      }`} />
+                      <p className="text-xs text-gray-600 line-clamp-1">{task.team}</p>
+                    </div>
                   </div>
-                  <Button 
-                    variant={task.action.variant} 
-                    size="sm"
-                    className="shrink-0 text-xs h-8 px-3"
-                  >
-                    {task.action.icon}
-                    {task.action.label}
-                  </Button>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className={`flex items-center gap-1 text-xs ${
+                      task.status === "Complete" ? "text-green-600" : 
+                      task.status === "Due Today" ? "text-gray-900" : 
+                      "text-gray-900"
+                    }`}>
+                      {task.statusIcon}
+                      <span>{task.status}</span>
+                    </div>
+                    {task.action.disabled ? (
+                      <button 
+                        disabled
+                        className="done-button text-gray-900 text-xs h-8 px-3 font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {task.action.iconSrc ? (
+                          <Image src={task.action.iconSrc} alt="" width={16} height={16} className="w-4 h-4" />
+                        ) : (
+                          task.action.icon
+                        )}
+                        {task.action.label}
+                      </button>
+                    ) : (
+                      <button className="gradient-button text-xs h-8 px-3 text-white font-medium flex items-center gap-2">
+                        {task.action.iconSrc ? (
+                          <Image src={task.action.iconSrc} alt="" width={16} height={16} className="w-4 h-4" />
+                        ) : (
+                          task.action.icon
+                        )}
+                        {task.action.label}
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

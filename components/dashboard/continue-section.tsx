@@ -41,7 +41,7 @@ export function ContinueSection() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-gray-900">Continue Where You Left Off</h2>
-        <Button variant="outline" size="sm">View More</Button>
+        <button className="gradient-button px-4 py-2 text-white text-sm font-medium">View More</button>
       </div>
       <div className="flex gap-4 overflow-x-auto pb-4">
         {continueItems.map((item) => (

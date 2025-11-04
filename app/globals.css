@@ -27,6 +27,8 @@
   );
   --button-gradient-bg: linear-gradient(177.43deg, #5c8ff7 10.06%, #276aee 62.94%);
   --button-border-color: rgba(21, 86, 216, 0.3);
+  --progress-gradient: linear-gradient(90deg, #7180df 0%, #2c49ff 100%);
+  --date-card-shadow: 0px 4px 15.7px 0px rgba(178, 204, 255, 0.51);
   --text-muted: rgba(0, 0, 0, 0.6);
 }
 
@@ -125,4 +127,34 @@ body {
   background: var(--button-gradient-bg);
   border: 1px solid var(--button-border-color);
   border-radius: 120px;
+}
+
+/* Reusable progress gradient class */
+.progress-gradient {
+  background: var(--progress-gradient) !important;
+}
+
+/* Apply gradient to progress indicator */
+.progress-gradient-wrapper > div > div {
+  background: var(--progress-gradient) !important;
+}
+
+/* Date card shadow */
+.date-card-shadow {
+  box-shadow: var(--date-card-shadow);
+}
+
+/* Date indicator dot */
+.date-indicator {
+  background: var(--button-gradient-bg);
+  border-radius: 50%;
+}
+
+/* Done button style */
+.done-button {
+  background: linear-gradient(177.43deg, #DDDDDD 10.06%, #919893 62.94%);
+  border-top: 1px solid;
+  border-image-source: linear-gradient(90deg, #CACACA 13.08%, #D8D8D8 48.25%, #CACACA 86.05%);
+  border-image-slice: 1;
+  border-radius: 14px;
 }

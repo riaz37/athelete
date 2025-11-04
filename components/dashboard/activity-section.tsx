@@ -60,7 +60,7 @@ export function ActivitySection() {
             <Button variant="ghost" size="icon">
               <Filter className="w-4 h-4" />
             </Button>
-            <Button variant="outline" size="sm">View More</Button>
+            <button className="gradient-button px-4 py-2 text-white text-sm font-medium">View More</button>
           </div>
         </div>
       </CardHeader>
