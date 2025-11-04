@@ -115,8 +115,8 @@ export function LeaderboardSection() {
                     }`}
                   >
                     <CardContent className="p-4">
-                      <div className="relative mb-3">
-                        <div className="w-full h-40 rounded overflow-hidden mb-1 relative">
+                      <div className="relative">
+                        <div className="w-full h-40 rounded overflow-hidden relative">
                           <Image
                             src={player.image}
                             alt={player.name}
@@ -124,16 +124,7 @@ export function LeaderboardSection() {
                             className="object-cover"
                           />
                         </div>
-                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                          #{player.rank}
-                        </div>
                       </div>
-                      <p className="text-sm font-semibold text-gray-900 text-center mb-2">
-                        {player.name}
-                      </p>
-                      <p className="text-2xl font-bold text-gray-900 text-center">
-                        {player.score}
-                      </p>
                     </CardContent>
                   </Card>
                 </div>

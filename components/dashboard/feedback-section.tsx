@@ -55,7 +55,7 @@ export function FeedbackSection() {
       <CardContent>
         <div className="space-y-6">
           {feedbacks.map((feedback) => (
-            <div key={feedback.id} className="flex gap-3 border-b border-gray-200 last:border-0 pb-6 last:pb-0">
+            <div key={feedback.id} className="flex gap-3 feedback-item p-4">
               <Avatar className="h-12 w-12 shrink-0">
                 <AvatarImage src={feedback.avatar} alt={feedback.coach} />
                 <AvatarFallback className="bg-gray-100">

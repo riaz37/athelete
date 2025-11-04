@@ -162,7 +162,7 @@ export function TasksSection() {
 
         {/* Today's Tasks Section */}
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-4 pb-8">
             <CardHeader className="px-0 pt-0 pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">Todays tasks</CardTitle>
