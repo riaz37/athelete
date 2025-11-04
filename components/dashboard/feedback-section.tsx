@@ -2,11 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Star, Flame } from "lucide-react"
 
 interface Feedback {
   id: string
   coach: string
+  avatar: string
   time: string
   rating: number
   feedback: string
@@ -17,6 +19,7 @@ const feedbacks: Feedback[] = [
   {
     id: "1",
     coach: "Coach Sarah",
+    avatar: "/c1.svg",
     time: "2h ago",
     rating: 5,
     feedback: "Great progress on your strength training! Stay consistent and keep challenging yourself. You're getting stronger every day—keep pushing!"
@@ -24,6 +27,7 @@ const feedbacks: Feedback[] = [
   {
     id: "2",
     coach: "Coach Sarah",
+    avatar: "/c2.svg",
     time: "3h ago",
     rating: 5,
     feedback: "Your squat form is looking much better! Stay focused on technique each rep. Keep it up—you're building real strength!",
@@ -32,6 +36,7 @@ const feedbacks: Feedback[] = [
   {
     id: "3",
     coach: "Coach Sarah",
+    avatar: "/c3.svg",
     time: "4h ago",
     rating: 5,
     feedback: "Solid improvement on your squat technique! Each rep looks more confident. Keep driving forward—you're doing great!"
@@ -40,7 +45,7 @@ const feedbacks: Feedback[] = [
 
 export function FeedbackSection() {
   return (
-    <Card>
+    <Card className="bg-glass-bg">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Coach Feedback</CardTitle>
@@ -50,31 +55,39 @@ export function FeedbackSection() {
       <CardContent>
         <div className="space-y-6">
           {feedbacks.map((feedback) => (
-            <div key={feedback.id} className="border-b border-gray-200 last:border-0 pb-6 last:pb-0">
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <p className="font-semibold text-gray-900">{feedback.coach}</p>
-                  <p className="text-xs text-gray-500">{feedback.time}</p>
+            <div key={feedback.id} className="flex gap-3 border-b border-gray-200 last:border-0 pb-6 last:pb-0">
+              <Avatar className="h-12 w-12 shrink-0">
+                <AvatarImage src={feedback.avatar} alt={feedback.coach} />
+                <AvatarFallback className="bg-gray-100">
+                  {feedback.coach.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <p className="font-semibold text-gray-900">{feedback.coach}</p>
+                    <p className="text-xs text-gray-500">{feedback.time}</p>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${
+                          i < feedback.rating
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < feedback.rating
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                      }`}
-                    />
-                  ))}
-                </div>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {feedback.feedback}
+                  {feedback.hasFlame && (
+                    <Flame className="inline-block w-4 h-4 text-orange-500 ml-1" />
+                  )}
+                </p>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                {feedback.feedback}
-                {feedback.hasFlame && (
-                  <Flame className="inline-block w-4 h-4 text-orange-500 ml-1" />
-                )}
-              </p>
             </div>
           ))}
         </div>

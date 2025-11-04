@@ -158,3 +158,31 @@ body {
   border-image-slice: 1;
   border-radius: 14px;
 }
+
+/* Activity item hover effect */
+.activity-item-hover:hover {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+}
+
+/* Gradient text for activity time */
+.gradient-text {
+  background: linear-gradient(177.43deg, #5c8ff7 10.06%, #276aee 62.94%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Live button style */
+.live-button {
+  background: linear-gradient(148.19deg, #FF6565 16.41%, #EC4213 59.87%);
+  border-radius: 12px;
+  color: white;
+}
+
+/* RSVP button style */
+.rsvp-button {
+  background: rgba(69, 127, 243, 0.15);
+  border-radius: 12px;
+  color: #457ff3;
+}
