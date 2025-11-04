@@ -38,7 +38,7 @@ const continueItems: ContinueItem[] = [
 
 export function ContinueSection() {
   return (
-    <div className="mb-6">
+    <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-gray-900">Continue Where You Left Off</h2>
         <Button variant="outline" size="sm">View More</Button>

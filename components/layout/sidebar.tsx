@@ -1,58 +1,57 @@
 "use client"
 
 import Link from "next/link"
-import { 
-  LayoutDashboard, 
-  GraduationCap, 
-  User, 
-  Clipboard, 
-  MessageSquare, 
-  BarChart3, 
-  Calendar, 
-  Trophy, 
-  Headphones, 
-  Settings 
-} from "lucide-react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 const navigationItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/" },
-  { icon: GraduationCap, label: "Programs", href: "/programs" },
-  { icon: User, label: "Profile", href: "/profile" },
-  { icon: Clipboard, label: "Tasks", href: "/tasks" },
-  { icon: MessageSquare, label: "Messages", href: "/messages" },
-  { icon: BarChart3, label: "Analytics", href: "/analytics" },
-  { icon: Calendar, label: "Calendar", href: "/calendar" },
-  { icon: Trophy, label: "Achievements", href: "/achievements" },
-  { icon: Headphones, label: "Support", href: "/support" },
-  { icon: Settings, label: "Settings", href: "/settings" },
+  { icon: "/sidebar/s1.svg", label: "Dashboard", href: "/" },
+  { icon: "/sidebar/s2.svg", label: "Programs", href: "/programs" },
+  { icon: "/sidebar/s3.svg", label: "Profile", href: "/profile" },
+  { icon: "/sidebar/s4.svg", label: "Tasks", href: "/tasks" },
+  { icon: "/sidebar/s5.svg", label: "Messages", href: "/messages" },
+  { icon: "/sidebar/s6.svg", label: "Analytics", href: "/analytics" },
+  { icon: "/sidebar/s7.svg", label: "Calendar", href: "/calendar" },
+  { icon: "/sidebar/s8.svg", label: "Achievements", href: "/achievements" },
+  { icon: "/sidebar/s9.svg", label: "Support", href: "/support" },
+  { icon: "/sidebar/s10.svg", label: "Settings", href: "/settings" },
+  { icon: "/sidebar/s11.svg", label: "Extra 1", href: "/extra1" },
+  { icon: "/sidebar/s12.svg", label: "Extra 2", href: "/extra2" },
+  { icon: "/sidebar/13.svg", label: "Extra 3", href: "/extra3" },
+  { icon: "/sidebar/s14.svg", label: "Extra 4", href: "/extra4" },
 ]
 
 export function Sidebar() {
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-16 bg-gray-800 flex flex-col items-center py-4">
-      <div className="mb-8">
-        <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-white rounded-sm"></div>
+    <aside className="fixed left-4 top-[80px] md:top-[88px] bottom-16 z-40 w-[112px] flex flex-col items-center">
+      <nav className="flex flex-col items-center gap-4 px-5 py-4 bg-sidebar-bg backdrop-blur-sm rounded-[16px] shadow-lg border border-gray-200/50">
+        <div className="flex flex-col gap-3 w-full items-center">
+          {navigationItems.map((item) => {
+            const isSelected = item.href === "/";
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center justify-center h-10 rounded-xl transition-all",
+                  "text-gray-600 hover:text-white",
+                  isSelected && "sidebar-item-selected text-white",
+                  "hover:sidebar-item-hover",
+                  "hover:scale-105 active:scale-95"
+                )}
+                title={item.label}
+              >
+                <Image
+                  src={item.icon}
+                  alt={item.label}
+                  width={20}
+                  height={20}
+                  className="w-5 h-5"
+                />
+              </Link>
+            )
+          })}
         </div>
-      </div>
-      <nav className="flex-1 flex flex-col gap-2 w-full">
-        {navigationItems.map((item) => {
-          const Icon = item.icon
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center justify-center w-full h-12 transition-colors",
-                "hover:bg-gray-700 text-gray-300 hover:text-white"
-              )}
-              title={item.label}
-            >
-              <Icon className="w-5 h-5" />
-            </Link>
-          )
-        })}
       </nav>
     </aside>
   )

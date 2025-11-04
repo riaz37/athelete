@@ -1,41 +1,32 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Users, User, TrendingUp, Calendar } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Flame } from "lucide-react"
+import { TrendingUp } from "lucide-react"
+import Image from "next/image"
 
 interface MetricCardProps {
-  icon: React.ReactNode
+  icon?: React.ReactNode
   label: string
   value: string
   change?: string
   progress?: number
+  progressColor?: string
+  subLabel?: string
+  className?: string
 }
 
-function MetricCard({ icon, label, value, change, progress }: MetricCardProps) {
-  return (
-    <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-0">
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white/50 rounded-lg">{icon}</div>
-            <div>
+function MetricCard({ icon, label, value, change, progress, progressColor = "text-blue-600", subLabel, className }: MetricCardProps) {
+  if (progress !== undefined) {
+    // Progress card layout
+    return (
+      <Card className={`bg-[rgba(255,255,255,0.9)] border-0 rounded-[24px] shadow-sm ${className || ''}`}>
+        <CardContent className="p-3">
+          <div className="flex items-center justify-between h-full">
+            <div className="flex-1 flex flex-col items-center justify-center text-center">
               <p className="text-xs text-gray-600 mb-1">{label}</p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-gray-900">{value}</span>
-                {change && (
-                  <span className="text-sm font-medium text-green-600 flex items-center gap-1">
-                    <TrendingUp className="w-3 h-3" />
-                    {change}
-                  </span>
-                )}
-              </div>
+              {subLabel && <p className="text-xs text-gray-500">{subLabel}</p>}
             </div>
-          </div>
-          {progress !== undefined && (
-            <div className="relative w-16 h-16">
+            <div className="relative w-16 h-16 shrink-0">
               <svg className="w-16 h-16 transform -rotate-90">
                 <circle
                   cx="32"
@@ -55,15 +46,41 @@ function MetricCard({ icon, label, value, change, progress }: MetricCardProps) {
                   fill="none"
                   strokeDasharray={`${2 * Math.PI * 28}`}
                   strokeDashoffset={`${2 * Math.PI * 28 * (1 - progress / 100)}`}
-                  className="text-blue-600"
+                  className={progressColor}
                   strokeLinecap="round"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-sm font-bold text-gray-900">{progress}%</span>
+                <span className="text-base font-bold text-gray-900 leading-none">{progress}%</span>
               </div>
             </div>
-          )}
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Regular metric card layout
+  return (
+    <Card className={`bg-[rgba(255,255,255,0.9)] border-0 rounded-[24px] shadow-sm ${className || ''}`}>
+      <CardContent className="p-3">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            {icon && <div className="p-2 bg-white/50 rounded-lg">{icon}</div>}
+            <div>
+              <p className="text-xs text-gray-600 mb-1">{label}</p>
+              {subLabel && <p className="text-xs text-gray-500 mb-1">{subLabel}</p>}
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold text-gray-900">{value}</span>
+                {change && (
+                  <span className="text-sm font-medium text-green-600 flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    {change}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -72,68 +89,76 @@ function MetricCard({ icon, label, value, change, progress }: MetricCardProps) {
 
 export function HeroSection() {
   return (
-    <div className="relative rounded-2xl overflow-hidden mb-6">
-      <div 
-        className="relative min-h-64 bg-gradient-to-r from-blue-600 to-purple-600 p-4 md:p-8"
-        style={{
-          backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cdefs%3E%3Cpattern id=\"grid\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\"%3E%3Cpath d=\"M 100 0 L 0 0 0 100\" fill=\"none\" stroke=\"rgba(255,255,255,0.1)\" stroke-width=\"1\"/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\"100%25\" height=\"100%25\" fill=\"url(%23grid)\"/%3E%3C/svg%3E')",
-        }}
-      >
+    <div className="relative rounded-2xl overflow-hidden mb-4">
+      <div className="relative min-h-[500px] hero-bg-image">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative z-10 flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
-            <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 md:mb-6">The QB Fundamentals</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        {/* White gradient overlay at the bottom */}
+        <div className="absolute inset-x-0 bottom-0 h-[60%] pointer-events-none hero-gradient-overlay" />
+        
+        {/* Content positioned at the bottom */}
+        <div className="relative z-10 flex flex-col lg:flex-row gap-3 p-4 md:p-6 items-end min-h-[500px]">
+          <div className="flex-1 w-full">
+            <h2 className="text-xl md:text-3xl font-bold text-white mb-3 md:mb-4">The QB Fundamentals</h2>
+            <div className="grid grid-cols-2 md:grid-cols-12 gap-3">
               <MetricCard
-                icon={<Users className="w-5 h-5 text-blue-600" />}
+                icon={<Image src="/h1.svg" alt="Total Athletes" width={20} height={20} className="w-10 h-10" />}
                 label="Total Athletes"
                 value="65"
                 change="+12"
+                className="md:col-span-2"
               />
               <MetricCard
-                icon={<User className="w-5 h-5 text-blue-600" />}
+                icon={<Image src="/h2.svg" alt="Projected Ranking" width={20} height={20} className="w-5 h-5" />}
                 label="Projected Ranking"
                 value="#5"
+                className="md:col-span-2"
               />
               <MetricCard
-                icon={<Calendar className="w-5 h-5 text-blue-600" />}
-                label="Consistency Score (last 30 days)"
+                label="Consistency Score"
                 value=""
                 progress={65}
+                subLabel="last 30 days"
+                className="md:col-span-4"
               />
               <MetricCard
-                icon={<TrendingUp className="w-5 h-5 text-blue-600" />}
                 label="Weekly Progress"
                 value=""
                 progress={35}
+                progressColor="text-green-600"
+                className="md:col-span-4"
               />
             </div>
           </div>
           
-          <Card className="w-full lg:w-72 bg-white/95 backdrop-blur shrink-0">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-900">Active Streak</h3>
-                <Badge variant="orange" className="gap-1">
-                  <Flame className="w-3 h-3" />
-                  Hot Streak
-                </Badge>
+          <Card className="w-full lg:w-80 bg-[rgba(255,255,255,0.9)] border-0 backdrop-blur shrink-0 rounded-[24px] shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-gray-900 text-sm">Active Streak</h3>
+                <div className="flex items-center gap-2">
+                  <div className="hot-streak-button flex items-center px-4 py-3">
+                    <span className="text-xs font-medium text-white">Hot Streak</span>
+                  </div>
+                  <div className="hot-streak-icon-wrapper rounded-full p-2">
+                    <Image src="/fire.svg" alt="Fire" width={24} height={24} className="w-6 h-6" />
+                  </div>
+                </div>
               </div>
-              <div className="mb-4">
-                <p className="text-3xl font-bold text-gray-900 mb-2">12 Days</p>
+              <div className="mb-3">
+                <p className="text-2xl font-bold text-purple-900 mb-1">12 Days</p>
                 <p className="text-sm text-gray-500">Next milestone: 15 days</p>
               </div>
               <div className="flex gap-1">
                 {["M", "T", "W", "T", "F", "S", "S"].map((day, index) => (
                   <div key={index} className="flex-1 text-center">
                     <div className="text-xs text-gray-500 mb-1">{day}</div>
-                    {index < 5 ? (
-                      <div className="w-8 h-8 mx-auto bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                    {index < 4 ? (
+                      <div className="w-8 h-8 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
                         ✓
                       </div>
                     ) : (
                       <div className="w-8 h-8 mx-auto border-2 border-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xs">
-                        {index === 5 ? "23" : "24"}
+                        {index === 4 ? "23" : index === 5 ? "24" : "25"}
                       </div>
                     )}
                   </div>

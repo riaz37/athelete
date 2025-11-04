@@ -4,11 +4,38 @@
   --background: rgba(231, 242, 245, 1);
   --foreground: #171717;
   --ring: 0 0 0 calc(1px + 0px) rgb(59 130 246 / 0.5);
+  --glass-bg: rgba(255, 255, 255, 0.3);
+  --sidebar-bg: rgba(255, 255, 255, 0.05);
+  --sidebar-hover-bg: linear-gradient(
+    177.43deg,
+    #5c8ff7 10.06%,
+    #276aee 62.94%
+  );
+  --sidebar-hover-border-image: linear-gradient(
+    90deg,
+    #68b0ea 13.08%,
+    #9dd0fd 48.25%,
+    #68b0ea 86.05%
+  );
+  --hot-streak-bg: linear-gradient(148.19deg, #fdb631 16.41%, #ec4213 59.87%);
+  --hot-streak-shadow: -4px 8px 26px 0px rgba(255, 255, 255, 0.1) inset;
+  --hot-streak-icon-bg: rgba(255, 255, 255, 0.65);
+  --hot-streak-icon-border: linear-gradient(
+    333.55deg,
+    #ffffff -68.58%,
+    rgba(255, 255, 255, 0) 59.63%
+  );
+  --button-gradient-bg: linear-gradient(177.43deg, #5c8ff7 10.06%, #276aee 62.94%);
+  --button-border-color: rgba(21, 86, 216, 0.3);
+  --text-muted: rgba(0, 0, 0, 0.6);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-glass-bg: var(--glass-bg);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-muted: var(--text-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -47,4 +74,55 @@ body {
 
 *::-webkit-scrollbar-thumb:hover {
   background-color: rgb(148 163 184);
+}
+
+/* Hero section reusable classes */
+.hero-bg-image {
+  background-image: url("/heroimage.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-gradient-overlay {
+  background: linear-gradient(
+    179.27deg,
+    rgba(255, 255, 255, 0) 39.54%,
+    rgba(255, 255, 255, 0.05) 58.29%,
+    rgba(255, 255, 255, 0.7) 72.85%,
+    rgba(255, 255, 255, 0.9) 86.17%,
+    #ffffff 99.37%
+  );
+}
+
+/* Sidebar hover effect reusable class */
+.hover\:sidebar-item-hover:hover,
+.sidebar-item-selected {
+  width: 40px;
+  border-radius: 12px;
+  background: var(--sidebar-hover-bg);
+
+  border-image-source: var(--sidebar-hover-border-image);
+  border-image-slice: 1;
+}
+
+/* Hot Streak button reusable class */
+.hot-streak-button {
+  background: var(--hot-streak-bg);
+  box-shadow: var(--hot-streak-shadow);
+  border-radius: 32px;
+}
+
+.hot-streak-icon-wrapper {
+  background: var(--hot-streak-icon-bg);
+  border: 1px solid;
+  border-image-source: var(--hot-streak-icon-border);
+  border-image-slice: 1;
+}
+
+/* Reusable gradient button class */
+.gradient-button {
+  background: var(--button-gradient-bg);
+  border: 1px solid var(--button-border-color);
+  border-radius: 120px;
 }
